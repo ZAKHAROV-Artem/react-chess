@@ -1,38 +1,69 @@
+* {
+  box-sizing: border-box;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  max-width: 100vw;
+  height: 100vh;
+  background: rgb(19, 73, 133);
+  background: radial-gradient(
+    circle,
+    rgba(19, 73, 133, 1) 18%,
+    rgba(10, 35, 63, 1) 57%,
+    rgba(5, 10, 17, 1) 87%
+  );
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.app-bar {
+  background: rgba(0, 0, 0, 0.546);
+  border-radius: 0 20px 20px 0;
+  width: 400px;
+  height: 70vh;
+}
+
+.board {
+  max-width: 95vh;
+  max-height: 95vh;
+  margin: 5vh;
+
+  display: grid;
+  grid-template-columns: repeat(8, 11.875vh);
+  grid-template-rows: repeat(8, 11.875vh);
+
+  box-shadow: 0 0 6px 8px rgb(34 211 238);
+}
+.cell {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 10px;
 }
-
-.App-link {
-  color: #61dafb;
+.cell img {
+  height: 100%;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.black {
+  background-color: rgb(99, 120, 147);
+}
+.white {
+  background-color: rgb(160, 169, 186);
+}
+.selected {
+  background: rgb(100, 212, 121);
+}
+.available {
+  width: 10%;
+  height: 10%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.546);
+}
+.avalibeToAttack {
+  background-color: rgba(255, 34, 34, 0.626);
+}
+.game-bar {
+  background: rgba(0, 0, 0, 0.546);
+  border-radius: 20px 0px 0px 20px;
+  width: 400px;
+  height: 70vh;
 }
