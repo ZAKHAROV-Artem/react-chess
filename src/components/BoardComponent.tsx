@@ -2,26 +2,36 @@ import { Fragment, FC, useState, useEffect } from "react";
 import { Board } from "./../models/Board";
 import CellComponent from "./CellComponent";
 import { Cell } from "./../models/Cell";
+import { Player } from "./../models/Player";
 interface BoardProps {
   board: Board;
   setBoard: (board: Board) => void;
+  currentPlayer: Player | null;
+  swapPlayer: () => void;
 }
 
-const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
+const BoardComponent: FC<BoardProps> = ({
+  board,
+  setBoard,
+  currentPlayer,
+  swapPlayer,
+}) => {
   const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
 
   function selectCell(targetCell: Cell) {
-    console.log(selectedCell, targetCell);
     if (
       selectedCell &&
       selectedCell !== targetCell &&
       selectedCell.figure?.canMove(targetCell)
     ) {
-      console.log("moved");
       selectedCell.moveFigure(targetCell);
+      swapPlayer();
       setSelectedCell(null);
     } else {
-      if (targetCell.figure !== null) {
+      if (
+        targetCell.figure !== null &&
+        targetCell.figure.color === currentPlayer?.color
+      ) {
         setSelectedCell(selectedCell === targetCell ? null : targetCell);
       }
     }

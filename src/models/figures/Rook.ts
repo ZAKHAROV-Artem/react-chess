@@ -4,6 +4,7 @@ import { Figure, FigureNames } from "./Figure";
 const black = require("../../assets/img/black-rook.png");
 const white = require("../../assets/img/white-rook.png");
 export class Rook extends Figure {
+  isMoved: boolean = false;
   constructor(color: colors, cell: Cell) {
     super(color, cell);
     this.image = color === "white" ? white : black;
@@ -15,5 +16,10 @@ export class Rook extends Figure {
     if (this.cell.isEmptyHorizontal(targetCell)) return true;
 
     return false;
+  }
+
+  moveFigure(targetCell: Cell) {
+    super.moveFigure(targetCell);
+    this.isMoved = true;
   }
 }

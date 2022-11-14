@@ -6,9 +6,12 @@ import { Queen } from "./figures/Queen";
 import { Bishop } from "./figures/Bishop";
 import { Knight } from "./figures/Knight";
 import { Rook } from "./figures/Rook";
+import { Figure, FigureNames } from "./figures/Figure";
 
 export class Board {
   cells: Cell[][] = [];
+  whiteBeatenFigures: Figure[] = [];
+  blackBeatenFigures: Figure[] = [];
 
   initCells() {
     for (let i = 0; i < 8; i++) {
@@ -27,16 +30,30 @@ export class Board {
   highlightCells(selectedCell: Cell | null) {
     for (let i = 0; i < this.cells.length; i++) {
       const row = this.cells[i];
-
       for (let j = 0; j < row.length; j++) {
         const targetCell = row[j];
         targetCell.available = !!selectedCell?.figure?.canMove(targetCell);
       }
     }
   }
+  isKingUnderAttack(selectedCell: Cell | null) {
+    for (let i = 0; i < this.cells.length; i++) {
+      const row = this.cells[i];
+      for (let j = 0; j < row.length; j++) {
+        const targetCell = row[j];
+        const available = !!selectedCell?.figure?.canMove(targetCell);
+        if (targetCell.figure?.name === FigureNames.KING && available) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   getCopyBoard(): Board {
     const newBoard = new Board();
     newBoard.cells = this.cells;
+    newBoard.whiteBeatenFigures = this.whiteBeatenFigures;
+    newBoard.blackBeatenFigures = this.blackBeatenFigures;
     return newBoard;
   }
 
@@ -84,5 +101,12 @@ export class Board {
     this.addRooks();
     this.addPawns();
     this.addPawns();
+  }
+  addBeatedFigure(figure: Figure) {
+    if (figure.color === colors.WHITE) {
+      this.whiteBeatenFigures.push(figure);
+    } else {
+      this.blackBeatenFigures.push(figure);
+    }
   }
 }

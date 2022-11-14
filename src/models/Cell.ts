@@ -1,5 +1,7 @@
 import { Figure, FigureNames } from "./figures/Figure";
 import { Board } from "./Board";
+import { HighlightSpanKind } from "typescript";
+import { colors } from "./Colors";
 
 export class Cell {
   readonly x: number;
@@ -80,11 +82,52 @@ export class Cell {
     this.figure.cell = this;
   }
 
+  isMoveBeat(targetCell: Cell) {
+    if (
+      !targetCell.isEmpty() &&
+      this.isEnemy(targetCell) &&
+      targetCell.figure !== null
+    ) {
+      this.board.addBeatedFigure(targetCell.figure);
+    }
+  }
+
+  private kingMove(targetCell: Cell) {
+    if (!this.figure) return;
+    const absX = Math.abs(targetCell.x - this.x) - 1;
+    if (absX === 3 || absX === 2) {
+      const kingMoveCell = this.board.getCells(
+        absX === 3 ? targetCell.x + 2 : targetCell.x - 1,
+        this.y
+      );
+      const rookMoveCell = this.board.getCells(
+        absX === 3 ? this.x - 1 : this.x + 1,
+        this.y
+      );
+      this.move(targetCell.figure, kingMoveCell);
+      if (targetCell.figure) {
+        this.move(targetCell.figure, rookMoveCell);
+      }
+    } else {
+      this.move(this.figure, targetCell);
+    }
+  }
+
+  private move(figure: Figure | null, targetCell: Cell) {
+    if (!figure) return;
+    figure.moveFigure(targetCell);
+    targetCell.changeFigure(figure);
+    figure = null;
+  }
+
   moveFigure(targetCell: Cell) {
-    if (this.figure?.canMove(targetCell)) {
-      this.figure.moveFigure(targetCell);
-      targetCell.changeFigure(this.figure);
-      this.figure = null;
+    if (this.figure && this.figure.canMove(targetCell)) {
+      this.isMoveBeat(targetCell);
+      if (this.figure.name === FigureNames.KING) {
+        this.kingMove(targetCell);
+      } else {
+        this.move(this.figure, targetCell);
+      }
     }
   }
 }
