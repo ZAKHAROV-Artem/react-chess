@@ -13,7 +13,10 @@ export class Pawn extends Figure {
   }
   canMove(targetCell: Cell): boolean {
     if (!super.canMove(targetCell)) return false;
+    return this.figureMove(targetCell);
+  }
 
+  figureMove(targetCell: Cell): boolean {
     const direction = this.color === colors.WHITE ? -1 : 1;
     const firstStepDirection = this.color === colors.WHITE ? -2 : 2;
 
@@ -34,7 +37,6 @@ export class Pawn extends Figure {
     ) {
       return true;
     }
-
     return false;
   }
 

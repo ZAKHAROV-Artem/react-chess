@@ -1,6 +1,5 @@
 import { Figure, FigureNames } from "./figures/Figure";
 import { Board } from "./Board";
-import { HighlightSpanKind } from "typescript";
 import { colors } from "./Colors";
 
 export class Cell {
@@ -11,6 +10,7 @@ export class Cell {
   board: Board;
   available: boolean;
   id: string;
+  isUnderAttack: boolean = false; //For king
 
   constructor(
     board: Board,
@@ -93,7 +93,6 @@ export class Cell {
   }
 
   private kingMove(targetCell: Cell) {
-    if (!this.figure) return;
     const absX = Math.abs(targetCell.x - this.x) - 1;
     if (absX === 3 || absX === 2) {
       const kingMoveCell = this.board.getCells(
@@ -104,12 +103,15 @@ export class Cell {
         absX === 3 ? this.x - 1 : this.x + 1,
         this.y
       );
-      this.move(targetCell.figure, kingMoveCell);
+      this.move(this.figure, kingMoveCell);
+      this.figure = null;
       if (targetCell.figure) {
         this.move(targetCell.figure, rookMoveCell);
+        targetCell.figure = null;
       }
     } else {
       this.move(this.figure, targetCell);
+      this.figure = null;
     }
   }
 
@@ -117,7 +119,45 @@ export class Cell {
     if (!figure) return;
     figure.moveFigure(targetCell);
     targetCell.changeFigure(figure);
-    figure = null;
+  }
+  findKingCell(kingColorToCheck: string): Cell | null {
+    for (let i = 0; i < this.board.cells.length; i++) {
+      const row = this.board.cells[i];
+      for (let j = 0; j < row.length; j++) {
+        const probablyKingCell = row[j];
+        if (
+          probablyKingCell.figure?.name === FigureNames.KING &&
+          probablyKingCell.figure.color === kingColorToCheck
+        ) {
+          return probablyKingCell;
+        }
+      }
+    }
+    return null;
+  }
+  isKingUnderAttack(kingCell: Cell | null) {
+    if (kingCell === null) return false;
+    for (let i = 0; i < this.board.cells.length; i++) {
+      const row = this.board.cells[i];
+      for (let j = 0; j < row.length; j++) {
+        const probablyAttackFrom = row[j];
+        if (probablyAttackFrom.figure?.color !== kingCell.figure?.color) {
+          const isAttacked = !!probablyAttackFrom?.figure?.figureMove(kingCell);
+          if (isAttacked) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+  changeIsKingUnderAttack(kingCell: Cell) {
+    if (this.isKingUnderAttack(kingCell)) {
+      kingCell.isUnderAttack = true;
+    } else {
+      kingCell.isUnderAttack = false;
+      this.isUnderAttack = false;
+    }
   }
 
   moveFigure(targetCell: Cell) {
@@ -127,6 +167,22 @@ export class Cell {
         this.kingMove(targetCell);
       } else {
         this.move(this.figure, targetCell);
+        this.figure = null;
+      }
+      console.log(targetCell, this);
+      const enemyKingColor: string =
+        targetCell.figure?.color === colors.WHITE ? colors.BLACK : colors.WHITE;
+      const ownKingColor: string =
+        targetCell.figure?.color === colors.WHITE ? colors.WHITE : colors.BLACK;
+
+      const enemyKingCell = this.findKingCell(enemyKingColor);
+      const ownKingCell = this.findKingCell(ownKingColor);
+
+      if (enemyKingCell) {
+        this.changeIsKingUnderAttack(enemyKingCell);
+      }
+      if (ownKingCell) {
+        this.changeIsKingUnderAttack(ownKingCell);
       }
     }
   }

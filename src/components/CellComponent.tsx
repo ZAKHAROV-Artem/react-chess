@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import { FigureNames } from "../models/figures/Figure";
 import { Cell } from "./../models/Cell";
 
 interface CellProps {
@@ -12,7 +13,7 @@ const CellComponent: FC<CellProps> = ({ cell, selected, selectCell }) => {
     <div
       className={`cell ${cell.color} ${selected && "selected"} ${
         cell.available && cell.figure && "avalibeToAttack"
-      }`}
+      } ${cell.isUnderAttack ? "kingUnderAttack" : ""}`}
       onClick={(e) => selectCell(cell)}
     >
       {cell.available && !cell.figure && <div className="available" />}

@@ -63,6 +63,26 @@
 .avalibeToAttack {
   box-shadow: inset 0px 0px 10px 5px rgb(238, 238, 34);
 }
+.kingUnderAttack {
+  animation: kingAttack 4s infinite linear;
+}
+@keyframes kingAttack {
+  0% {
+    box-shadow: inset 0px 0px 10px 0px rgb(238, 34, 34);
+  }
+  25% {
+    box-shadow: inset 0px 0px 5px 2.5px rgb(238, 34, 34);
+  }
+  50% {
+    box-shadow: inset 0px 0px 10px 7px rgb(238, 34, 34);
+  }
+  75% {
+    box-shadow: inset 0px 0px 5px 2.5px rgb(238, 34, 34);
+  }
+  100% {
+    box-shadow: inset 0px 0px 10px 0px rgb(238, 34, 34);
+  }
+}
 .bar {
   background: rgba(0, 0, 0, 0.546);
   border-radius: 20px;

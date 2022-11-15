@@ -36,19 +36,7 @@ export class Board {
       }
     }
   }
-  isKingUnderAttack(selectedCell: Cell | null) {
-    for (let i = 0; i < this.cells.length; i++) {
-      const row = this.cells[i];
-      for (let j = 0; j < row.length; j++) {
-        const targetCell = row[j];
-        const available = !!selectedCell?.figure?.canMove(targetCell);
-        if (targetCell.figure?.name === FigureNames.KING && available) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+
   getCopyBoard(): Board {
     const newBoard = new Board();
     newBoard.cells = this.cells;

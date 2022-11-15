@@ -1,5 +1,6 @@
 import { colors } from "../Colors";
 import { Cell } from "./../Cell";
+import { King } from "./King";
 
 export enum FigureNames {
   FIGURE = "",
@@ -30,12 +31,16 @@ export class Figure {
   canMove(targetCell: Cell): boolean {
     if (
       targetCell.figure?.color === this.color &&
-      targetCell.figure.name !== FigureNames.KING
-    )
+      targetCell.figure?.name !== FigureNames.KING
+    ) {
       return false;
-    if (targetCell.figure?.name === "KING") return false;
+    }
+
+    if (targetCell.figure?.name === FigureNames.KING) return false;
+
     return true;
   }
 
+  figureMove(targetCell: Cell) {}
   moveFigure(targetCell: Cell) {}
 }
