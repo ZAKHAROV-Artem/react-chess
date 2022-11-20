@@ -9,8 +9,8 @@ interface BeatenFiguresProps {
 const BeatenFigures: FC<BeatenFiguresProps> = ({ figures, player }) => {
   return (
     <div>
-      <h3 className="mt-5 text-white">
-        <span className="uppercase font-bold">
+      <h3 className="mt-5 text-white title-sm">
+        <span className="uppercase  font-bold">
           {player === 0 ? "white" : "black"}
         </span>{" "}
         lost figures
@@ -25,7 +25,7 @@ const BeatenFigures: FC<BeatenFiguresProps> = ({ figures, player }) => {
               <img
                 src={figure.image?.toString()}
                 alt={`${figure.name} figure`}
-                className="w-7"
+                className="icon"
               />
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { colors } from "../Colors";
 import { Cell } from "./../Cell";
 import { King } from "./King";
+import { Board } from "./../Board";
 
 export enum FigureNames {
   FIGURE = "",

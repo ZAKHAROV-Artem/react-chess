@@ -10,6 +10,7 @@ import ReferenceComponent from "./components/ReferenceComponent";
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [board, setBoard] = useState<Board>(new Board());
+
   const [whitePlayer, setWhitePlayer] = useState<Player>(
     new Player(colors.WHITE)
   );
@@ -27,6 +28,7 @@ function App() {
     newBoard.initCells();
     newBoard.addFigures();
     setBoard(newBoard);
+
     setCurrentPlayer(whitePlayer);
   }
 

@@ -13,7 +13,7 @@ const SelectTimeItem: FC<SelectTimeItemProps> = ({
 }) => {
   return (
     <div
-      className={`px-2 py-1 rounded-md mb-2 font-thin hover:bg-blue-600 hover:text-white duration-300 ${
+      className={`text-center px-2 py-1 rounded-md mb-2 font-thin hover:bg-blue-600 hover:text-white duration-300 ${
         isSelected ? "bg-blue-600 text-white" : "bg-white"
       }`}
       onClick={(e) => setSelectedTime(time)}

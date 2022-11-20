@@ -6,6 +6,7 @@ import { Player } from "./../models/Player";
 interface BoardProps {
   board: Board;
   setBoard: (board: Board) => void;
+
   currentPlayer: Player | null;
   swapPlayer: () => void;
 }
@@ -13,6 +14,7 @@ interface BoardProps {
 const BoardComponent: FC<BoardProps> = ({
   board,
   setBoard,
+
   currentPlayer,
   swapPlayer,
 }) => {

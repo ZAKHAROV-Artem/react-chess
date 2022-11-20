@@ -17,7 +17,7 @@ const StartComponent: FC<startComponentProps> = ({ setGameStarted }) => {
 
   return (
     <div className="mb-3 bar flex flex-col px-3 py-4">
-      <div className="flex justify-around">
+      <div className="grid grid-cols-3 gap-2">
         <SelectTimeItem
           isSelected={selectedTime === 5}
           time={5}

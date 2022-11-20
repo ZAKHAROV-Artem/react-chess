@@ -14,22 +14,45 @@ export class King extends Figure {
   }
 
   canMove(targetCell: Cell): boolean {
-    const absX = Math.abs(targetCell.x - this.cell.x);
-    const absY = Math.abs(targetCell.y - this.cell.y);
-    if (this.figureMove(targetCell)) return true;
+    if (this.castling(targetCell)) return true;
     if (!super.canMove(targetCell)) return false;
-    return this.checkSimpleMove(absX, absY) ? true : false;
-  }
-  private checkSimpleMove(absX: number, absY: number) {
-    if (absX + absY === 1) return true;
-    if (absX === 1 && absY === 1) return true;
+
+    return this.figureMove(targetCell) ? true : false;
   }
   figureMove(targetCell: Cell): boolean {
+    return this.simpleMove(targetCell);
+  }
+  private simpleMove(targetCell: Cell): boolean {
+    const absX = Math.abs(targetCell.x - this.cell.x);
+    const absY = Math.abs(targetCell.y - this.cell.y);
+    if (absX + absY === 1) {
+      if (this.cell.isCellUnderAttack(targetCell, this.cell)) {
+        console.log("Cell is under attack", targetCell);
+        return false;
+      }
+      console.log(targetCell);
+      return true;
+    }
+    if (absX === 1 && absY === 1) {
+      if (this.cell.isCellUnderAttack(targetCell, this.cell)) {
+        console.log("Cell is under attack", targetCell);
+        return false;
+      }
+      console.log(targetCell);
+      return true;
+    }
+    return false;
+  }
+  castling(targetCell: Cell): boolean {
     if (
       this.isCanСastling &&
       targetCell.figure?.color === this.color &&
       targetCell.figure?.hasOwnProperty("isMoved")
     ) {
+      if (this.cell.isKingUnderAttack(this.cell)) {
+        console.log("Cell is under attack", targetCell);
+        return false;
+      }
       const values = Object.values(targetCell.figure);
       if (values[5]) {
         return false;
@@ -40,7 +63,7 @@ export class King extends Figure {
       for (let i = 1; i <= xDifference; i++) {
         if (
           !this.cell.board
-            .getCells(
+            .getCell(
               isLeftRook ? this.cell.x - i : this.cell.x + i,
               this.cell.y
             )

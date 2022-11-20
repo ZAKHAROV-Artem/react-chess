@@ -16,7 +16,7 @@ const GamebarComponent: FC<GamebarComponentProps> = ({
   return (
     <div className="">
       <div className="bar game-bar mb-3">
-        <div className="text-white text-2xl">
+        <div className="text-white text-2xl title">
           Current move <span className="uppercase">{currentPlayer?.color}</span>
         </div>
 

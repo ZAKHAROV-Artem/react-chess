@@ -10,7 +10,7 @@ export class Cell {
   board: Board;
   available: boolean;
   id: string;
-  isUnderAttack: boolean = false; //For king
+  isUnderAttack: boolean = false;
 
   constructor(
     board: Board,
@@ -43,7 +43,7 @@ export class Cell {
     const max = Math.max(this.x, targetCell.x);
 
     for (let x = min + 1; x < max; x++) {
-      if (!this.board.getCells(x, this.y).isEmpty()) {
+      if (!this.board.getCell(x, this.y).isEmpty()) {
         return false;
       }
     }
@@ -56,7 +56,7 @@ export class Cell {
     const max = Math.max(this.y, targetCell.y);
 
     for (let y = min + 1; y < max; y++) {
-      if (!this.board.getCells(this.x, y).isEmpty()) {
+      if (!this.board.getCell(this.x, y).isEmpty()) {
         return false;
       }
     }
@@ -71,7 +71,7 @@ export class Cell {
     const dx = this.x < targetCell.x ? 1 : -1;
 
     for (let i = 1; i < absY; i++) {
-      if (!this.board.getCells(this.x + dx * i, this.y + dy * i).isEmpty())
+      if (!this.board.getCell(this.x + dx * i, this.y + dy * i).isEmpty())
         return false;
     }
     return true;
@@ -95,11 +95,11 @@ export class Cell {
   private kingMove(targetCell: Cell) {
     const absX = Math.abs(targetCell.x - this.x) - 1;
     if (absX === 3 || absX === 2) {
-      const kingMoveCell = this.board.getCells(
+      const kingMoveCell = this.board.getCell(
         absX === 3 ? targetCell.x + 2 : targetCell.x - 1,
         this.y
       );
-      const rookMoveCell = this.board.getCells(
+      const rookMoveCell = this.board.getCell(
         absX === 3 ? this.x - 1 : this.x + 1,
         this.y
       );
@@ -115,7 +115,7 @@ export class Cell {
     }
   }
 
-  private move(figure: Figure | null, targetCell: Cell) {
+  move(figure: Figure | null, targetCell: Cell) {
     if (!figure) return;
     figure.moveFigure(targetCell);
     targetCell.changeFigure(figure);
@@ -151,6 +151,25 @@ export class Cell {
     }
     return false;
   }
+
+  isCellUnderAttack(vitcimCell: Cell, moveFrom: Cell): boolean {
+    for (let i = 0; i < this.board.cells.length; i++) {
+      const row = this.board.cells[i];
+      for (let j = 0; j < row.length; j++) {
+        const probablyAttackFrom = row[j];
+        if (probablyAttackFrom.figure?.color !== moveFrom.figure?.color) {
+          const isAttacked =
+            !!probablyAttackFrom?.figure?.figureMove(vitcimCell);
+          if (isAttacked) {
+            console.log("Can attack from", probablyAttackFrom);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   changeIsKingUnderAttack(kingCell: Cell) {
     if (this.isKingUnderAttack(kingCell)) {
       kingCell.isUnderAttack = true;
@@ -169,7 +188,7 @@ export class Cell {
         this.move(this.figure, targetCell);
         this.figure = null;
       }
-      console.log(targetCell, this);
+
       const enemyKingColor: string =
         targetCell.figure?.color === colors.WHITE ? colors.BLACK : colors.WHITE;
       const ownKingColor: string =

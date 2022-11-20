@@ -32,6 +32,7 @@ export class Board {
       const row = this.cells[i];
       for (let j = 0; j < row.length; j++) {
         const targetCell = row[j];
+
         targetCell.available = !!selectedCell?.figure?.canMove(targetCell);
       }
     }
@@ -45,39 +46,39 @@ export class Board {
     return newBoard;
   }
 
-  getCells(x: number, y: number) {
+  getCell(x: number, y: number) {
     return this.cells[y][x];
   }
   private addKings() {
-    new King(colors.WHITE, this.getCells(4, 7));
-    new King(colors.BLACK, this.getCells(4, 0));
+    new King(colors.WHITE, this.getCell(4, 7));
+    new King(colors.BLACK, this.getCell(4, 0));
   }
   private addQueens() {
-    new Queen(colors.WHITE, this.getCells(3, 7));
-    new Queen(colors.BLACK, this.getCells(3, 0));
+    new Queen(colors.WHITE, this.getCell(3, 7));
+    new Queen(colors.BLACK, this.getCell(3, 0));
   }
   private addBishops() {
-    new Bishop(colors.WHITE, this.getCells(2, 7));
-    new Bishop(colors.WHITE, this.getCells(5, 7));
-    new Bishop(colors.BLACK, this.getCells(2, 0));
-    new Bishop(colors.BLACK, this.getCells(5, 0));
+    new Bishop(colors.WHITE, this.getCell(2, 7));
+    new Bishop(colors.WHITE, this.getCell(5, 7));
+    new Bishop(colors.BLACK, this.getCell(2, 0));
+    new Bishop(colors.BLACK, this.getCell(5, 0));
   }
   private addKnights() {
-    new Knight(colors.WHITE, this.getCells(1, 7));
-    new Knight(colors.WHITE, this.getCells(6, 7));
-    new Knight(colors.BLACK, this.getCells(1, 0));
-    new Knight(colors.BLACK, this.getCells(6, 0));
+    new Knight(colors.WHITE, this.getCell(1, 7));
+    new Knight(colors.WHITE, this.getCell(6, 7));
+    new Knight(colors.BLACK, this.getCell(1, 0));
+    new Knight(colors.BLACK, this.getCell(6, 0));
   }
   private addRooks() {
-    new Rook(colors.WHITE, this.getCells(0, 7));
-    new Rook(colors.WHITE, this.getCells(7, 7));
-    new Rook(colors.BLACK, this.getCells(0, 0));
-    new Rook(colors.BLACK, this.getCells(7, 0));
+    new Rook(colors.WHITE, this.getCell(0, 7));
+    new Rook(colors.WHITE, this.getCell(7, 7));
+    new Rook(colors.BLACK, this.getCell(0, 0));
+    new Rook(colors.BLACK, this.getCell(7, 0));
   }
   private addPawns() {
     for (let i = 0; i < 8; i++) {
-      new Pawn(colors.WHITE, this.getCells(i, 6));
-      new Pawn(colors.BLACK, this.getCells(i, 1));
+      new Pawn(colors.WHITE, this.getCell(i, 6));
+      new Pawn(colors.BLACK, this.getCell(i, 1));
     }
   }
 

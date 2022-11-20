@@ -3,6 +3,7 @@
 }
 .App {
   max-width: 100vw;
+  width: 100vw;
   max-height: 100vh;
   height: 100vh;
   overflow: hidden;
@@ -101,7 +102,11 @@
 .title {
   font-size: 3vh;
 }
+.title-sm {
+  font-size: 2vh;
+}
 .icon {
+  width: 3vh;
   transition: 0.3s;
 }
 .icon:hover {
